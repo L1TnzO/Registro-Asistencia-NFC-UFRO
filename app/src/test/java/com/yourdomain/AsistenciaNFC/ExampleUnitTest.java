@@ -1,4 +1,4 @@
-package com.yourdomain.attendanceapp;
+package com.yourdomain.AsistenciaNFC;
 
 import org.junit.Test;
 

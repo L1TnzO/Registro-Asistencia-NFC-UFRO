@@ -1,25 +1,31 @@
-package com.yourdomain.attendanceapp.data;
+package com.UFRO.AsistenciaNFC.data;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class Subject {
 
     private String subjectCode;
     private String subjectName;
-    private String subjectDays;
     private LocalTime subjectTimeStart;
     private LocalTime subjectTimeEnd;
-    private HashMap<LocalDate, Boolean> attendanceData;
+    private String subjectDays;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private LinkedHashMap<LocalDate, Boolean> attendanceData;
 
-    public Subject(String subjectCode, String subjectName, String subjectDays, LocalTime subjectTimeStart, LocalTime subjectTimeEnd) {
+
+    public Subject(String subjectCode, String subjectName, String subjectDays, LocalTime subjectTimeStart, LocalTime subjectTimeEnd,LocalDate startDate, LocalDate endDate) {
         this.subjectCode = subjectCode;
         this.subjectName = subjectName;
-        this.subjectDays = subjectDays;
         this.subjectTimeStart = subjectTimeStart;
         this.subjectTimeEnd = subjectTimeEnd;
-        this.attendanceData = new HashMap<>();
+        this.subjectDays = subjectDays;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.attendanceData = new LinkedHashMap<>();
     }
 
     public float calculateAttendance() {
@@ -51,11 +57,15 @@ public class Subject {
         return subjectTimeEnd;
     }
 
+    public LocalDate getStartDate() {return startDate;}
+
+    public LocalDate getEndDate() {return endDate;}
+
     public HashMap<LocalDate, Boolean> getAttendanceData() {
         return attendanceData;
     }
 
-    public void setAttendanceData(HashMap<LocalDate, Boolean> attendanceData) {
+    public void setAttendanceData(LinkedHashMap<LocalDate, Boolean> attendanceData) {
         this.attendanceData = attendanceData;
     }
 }

@@ -16,4 +16,10 @@
         android:text="Attendance Percentage"
         android:layout_below="@id/textView_subjectName" />
 
+    <ListView
+        android:id="@+id/listView_attendance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
 </RelativeLayout>

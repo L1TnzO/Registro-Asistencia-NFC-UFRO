@@ -11,30 +11,40 @@ public class Subject {
     private String subjectName;
     private LocalTime subjectTimeStart;
     private LocalTime subjectTimeEnd;
-    private String subjectDays;
+    private String subjectTheoricalDays;
+    private String subjectPracticalDays;
     private LocalDate startDate;
     private LocalDate endDate;
-    private LinkedHashMap<LocalDate, Boolean> attendanceData;
+    private LinkedHashMap<LocalDate, Boolean> theoreticalAttendanceData;
+    private LinkedHashMap<LocalDate, Boolean> practicalAttendanceData;
 
 
-    public Subject(String subjectCode, String subjectName, String subjectDays, LocalTime subjectTimeStart, LocalTime subjectTimeEnd,LocalDate startDate, LocalDate endDate) {
+    public Subject(String subjectCode, String subjectName, String subjectTheoricalDays, String subjectPracticalDays, LocalTime subjectTimeStart, LocalTime subjectTimeEnd,LocalDate startDate, LocalDate endDate) {
         this.subjectCode = subjectCode;
         this.subjectName = subjectName;
         this.subjectTimeStart = subjectTimeStart;
         this.subjectTimeEnd = subjectTimeEnd;
-        this.subjectDays = subjectDays;
+        this.subjectTheoricalDays = subjectTheoricalDays;
+        this.subjectPracticalDays = subjectPracticalDays;
+
         this.startDate = startDate;
         this.endDate = endDate;
-        this.attendanceData = new LinkedHashMap<>();
+        this.theoreticalAttendanceData = new LinkedHashMap<>();
+        this.practicalAttendanceData = new LinkedHashMap<>();
     }
 
     public float calculateAttendance() {
-        float totalClasses = attendanceData.size();
-        float attendedClasses = 0;
-        for (Boolean attended : attendanceData.values()) {
-            if (attended) attendedClasses++;
+        float totalTheoreticalClasses = theoreticalAttendanceData.size();
+        float attendedTheoreticalClasses = 0;
+        for (Boolean attended : theoreticalAttendanceData.values()) {
+            if (attended) attendedTheoreticalClasses++;
         }
-        return (attendedClasses / totalClasses) * 100;
+        float totalPracticalClasses = practicalAttendanceData.size();
+        float attendedPracticalClasses = 0;
+        for (Boolean attended : practicalAttendanceData.values()) {
+            if (attended) attendedPracticalClasses++;
+        }
+        return ((attendedTheoreticalClasses / totalTheoreticalClasses) * 100 + (attendedPracticalClasses / totalPracticalClasses) * 100) / 2;
     }
 
     public String getSubjectCode() {
@@ -45,8 +55,12 @@ public class Subject {
         return subjectName;
     }
 
-    public String getSubjectDays() {
-        return subjectDays;
+    public String getSubjectTheoricalDays() {
+        return subjectTheoricalDays;
+    }
+
+    public String getSubjectPracticalDays() {
+        return subjectPracticalDays;
     }
 
     public LocalTime getSubjectTimeStart() {
@@ -61,12 +75,20 @@ public class Subject {
 
     public LocalDate getEndDate() {return endDate;}
 
-    public HashMap<LocalDate, Boolean> getAttendanceData() {
-        return attendanceData;
+    public HashMap<LocalDate, Boolean> getTheoreticalAttendanceData() {
+        return theoreticalAttendanceData;
     }
 
-    public void setAttendanceData(LinkedHashMap<LocalDate, Boolean> attendanceData) {
-        this.attendanceData = attendanceData;
+    public HashMap<LocalDate, Boolean> getPracticalAttendanceData() {
+        return practicalAttendanceData;
+    }
+
+    public void setTheoreticalAttendanceData(LinkedHashMap<LocalDate, Boolean> theoreticalAttendanceData) {
+        this.theoreticalAttendanceData = theoreticalAttendanceData;
+    }
+
+    public void setPracticalAttendanceData(LinkedHashMap<LocalDate, Boolean> practicalAttendanceData) {
+        this.practicalAttendanceData = practicalAttendanceData;
     }
 }
 

@@ -33,22 +33,32 @@ public class AttendanceManager {
                 String subjectCode = data[1];
                 LocalTime subjectTimeStart = LocalTime.parse(data[2], DateTimeFormatter.ofPattern("HH:mm"));
                 LocalTime subjectTimeEnd = LocalTime.parse(data[3], DateTimeFormatter.ofPattern("HH:mm"));
-                LocalDate startDate = LocalDate.parse(data[5]);
-                LocalDate endDate = LocalDate.parse(data[6]);
-                String subjectDays = data[4];
+                String subjectTheoricalDays = data[4];
+                String subjectPracticalDays = data[5];
+                LocalDate startDate = LocalDate.parse(data[6]);
+                LocalDate endDate = LocalDate.parse(data[7]);
 
-                LinkedHashMap<LocalDate, Boolean> attendanceData = new LinkedHashMap<>();
-                if (data.length > 7) {
-                    for (int i = 7; i < data.length; i++) {
-                        String[] parts = data[i].split(":");
-                        LocalDate date = LocalDate.parse(parts[0]);
-                        Boolean attendance = Boolean.parseBoolean(parts[1]);
-                        attendanceData.put(date, attendance);
+                LinkedHashMap<LocalDate, Boolean> theoreticalAttendanceData = new LinkedHashMap<>();
+                LinkedHashMap<LocalDate, Boolean> practicalAttendanceData = new LinkedHashMap<>();
+                if (data.length > 8) {
+                    for (int i = 8; i < data.length; i++) {
+                        if (!data[i].isEmpty()) {  // Check if the part is not empty
+                            String[] parts = data[i].split(":");
+                            LocalDate date = LocalDate.parse(parts[0]);
+                            Boolean attendance = Boolean.parseBoolean(parts[1]);
+                            if (subjectTheoricalDays.charAt(date.getDayOfWeek().getValue() - 1) == '1') {
+                                theoreticalAttendanceData.put(date, attendance);
+                            } else if (subjectPracticalDays.charAt(date.getDayOfWeek().getValue() - 1) == '1') {
+                                practicalAttendanceData.put(date, attendance);
+                            }
+                        }
                     }
                 }
 
-                Subject subject = new Subject(subjectCode, subjectName, subjectDays, subjectTimeStart, subjectTimeEnd, startDate, endDate);
-                subject.setAttendanceData(attendanceData);
+
+                Subject subject = new Subject(subjectCode, subjectName, subjectTheoricalDays, subjectPracticalDays, subjectTimeStart, subjectTimeEnd, startDate, endDate);
+                subject.setTheoreticalAttendanceData(theoreticalAttendanceData);
+                subject.setPracticalAttendanceData(practicalAttendanceData);
                 subjects.put(subjectCode, subject);
             }
             csvReader.close();
@@ -56,6 +66,7 @@ public class AttendanceManager {
             throw new FileNotFoundException("No se pudo guardar en la base de datos");
         }
     }
+
 
     public void saveSubjects() throws IOException {
         FileWriter csvWriter = new FileWriter(csvFilePath);
@@ -67,23 +78,29 @@ public class AttendanceManager {
             row.add(subject.getSubjectCode());
             row.add(subject.getSubjectTimeStart().toString());
             row.add(subject.getSubjectTimeEnd().toString());
-            row.add(subject.getSubjectDays());
+            row.add(subject.getSubjectTheoricalDays());
+            row.add(subject.getSubjectPracticalDays());
             row.add(subject.getStartDate().toString());
             row.add(subject.getEndDate().toString());
 
-            StringBuilder attendanceData = new StringBuilder();
-            for (Map.Entry<LocalDate, Boolean> entry : subject.getAttendanceData().entrySet()) {
-                attendanceData.append(entry.getKey().toString())
+            StringBuilder theoreticalAttendanceData = new StringBuilder();
+            StringBuilder practicalAttendanceData = new StringBuilder();
+            for (Map.Entry<LocalDate, Boolean> entry : subject.getTheoreticalAttendanceData().entrySet()) {
+                theoreticalAttendanceData.append(entry.getKey().toString())
+                        .append(":")
+                        .append(entry.getValue().toString())
+                        .append(",");
+            }
+            for (Map.Entry<LocalDate, Boolean> entry : subject.getPracticalAttendanceData().entrySet()) {
+                practicalAttendanceData.append(entry.getKey().toString())
                         .append(":")
                         .append(entry.getValue().toString())
                         .append(",");
             }
 
-            if (attendanceData.length() > 0) {
-                attendanceData.deleteCharAt(attendanceData.length() - 1); // remove the last comma
-            }
-
-            row.add(attendanceData.toString());
+            // Include both theoretical and practical attendance data
+            row.add(theoreticalAttendanceData.toString());
+            row.add(practicalAttendanceData.toString());
             csvWriter.append(String.join(",", row));
             csvWriter.append("\n");
         }
@@ -106,13 +123,20 @@ public class AttendanceManager {
             if (subject.getSubjectCode().equals(nfcCode)) {
                 // Check if today is one of the subject's days
                 int dayOfWeek = currentDate.getDayOfWeek().getValue();  // This returns 1 for Monday and 7 for Sunday
-                if (subject.getSubjectDays().charAt(dayOfWeek - 1) == '1') {
+                if (subject.getSubjectTheoricalDays().charAt(dayOfWeek - 1) == '1' || subject.getSubjectPracticalDays().charAt(dayOfWeek - 1) == '1') {
                     // Check if current time is within the subject's start and end times
                     if (!currentTime.isBefore(subject.getSubjectTimeStart()) && !currentTime.isAfter(subject.getSubjectTimeEnd())) {
                         // Update attendance
-                        LinkedHashMap<LocalDate, Boolean> updatedAttendance = new LinkedHashMap<>(subject.getAttendanceData());
-                        updatedAttendance.put(currentDate, true);
-                        subject.setAttendanceData(updatedAttendance);
+                        LinkedHashMap<LocalDate, Boolean> updatedAttendance;
+                        if (subject.getSubjectTheoricalDays().charAt(dayOfWeek - 1) == '1') {
+                            updatedAttendance = new LinkedHashMap<>(subject.getTheoreticalAttendanceData());
+                            updatedAttendance.put(currentDate, true);
+                            subject.setTheoreticalAttendanceData(updatedAttendance);
+                        } else {
+                            updatedAttendance = new LinkedHashMap<>(subject.getPracticalAttendanceData());
+                            updatedAttendance.put(currentDate, true);
+                            subject.setPracticalAttendanceData(updatedAttendance);
+                        }
                         saveSubjects();  // Save back to CSV file
                         break;
                     }
@@ -129,20 +153,25 @@ public class AttendanceManager {
 
     private void generateClassDates(Subject subject) {
         LocalDate currentDate = subject.getStartDate();
-        LinkedHashMap<LocalDate, Boolean> attendanceData = new LinkedHashMap<>(subject.getAttendanceData());
-
         while (!currentDate.isAfter(subject.getEndDate())) {
-            int dayOfWeek = currentDate.getDayOfWeek().getValue();  // This returns 1 for Monday and 7 for Sunday
-            if (subject.getSubjectDays().charAt(dayOfWeek - 1) == '1') {
-                Boolean existingValue = attendanceData.get(currentDate);
+            int dayOfWeek = currentDate.getDayOfWeek().getValue();
+            if (subject.getSubjectTheoricalDays().charAt(dayOfWeek - 1) == '1') {
+                LinkedHashMap<LocalDate, Boolean> theoreticalAttendanceData = new LinkedHashMap<>(subject.getTheoreticalAttendanceData());
+                Boolean existingValue = theoreticalAttendanceData.get(currentDate);
                 if (existingValue == null) {
-                    attendanceData.put(currentDate, false);
+                    theoreticalAttendanceData.put(currentDate, false);
                 }
+                subject.setTheoreticalAttendanceData(theoreticalAttendanceData);
+            } else if (subject.getSubjectPracticalDays().charAt(dayOfWeek - 1) == '1') {
+                LinkedHashMap<LocalDate, Boolean> practicalAttendanceData = new LinkedHashMap<>(subject.getPracticalAttendanceData());
+                Boolean existingValue = practicalAttendanceData.get(currentDate);
+                if (existingValue == null) {
+                    practicalAttendanceData.put(currentDate, false);
+                }
+                subject.setPracticalAttendanceData(practicalAttendanceData);
             }
             currentDate = currentDate.plusDays(1);
         }
-
-        subject.setAttendanceData(attendanceData);
     }
 
 

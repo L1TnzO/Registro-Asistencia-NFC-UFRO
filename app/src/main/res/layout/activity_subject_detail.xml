@@ -19,7 +19,22 @@
     <ListView
         android:id="@+id/listView_attendance"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView_attendancePercentage" />
 
+    <Button
+        android:id="@+id/button_theoretical_attendance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Theoretical Attendance"
+        android:layout_below="@id/listView_attendance" />
+
+    <Button
+        android:id="@+id/button_practical_attendance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Practical Attendance"
+        android:layout_below="@id/button_theoretical_attendance" />
 
 </RelativeLayout>
+

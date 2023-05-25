@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +21,8 @@ import com.example.nfc_test.R;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class SubjectDetailActivity extends AppCompatActivity {
@@ -44,9 +47,8 @@ public class SubjectDetailActivity extends AppCompatActivity {
             return;
         }
 
-
         String subjectCode = getIntent().getStringExtra("subjectCode");
-        Subject subject = attendanceManager.getSubject(subjectCode);
+        final Subject subject = attendanceManager.getSubject(subjectCode);
 
         textViewSubjectName = findViewById(R.id.textView_subjectName);
         textViewAttendancePercentage = findViewById(R.id.textView_attendancePercentage);
@@ -54,11 +56,29 @@ public class SubjectDetailActivity extends AppCompatActivity {
         textViewSubjectName.setText(subject.getSubjectName());
         textViewAttendancePercentage.setText(String.valueOf(subject.calculateAttendance()));
 
-        // Create and fill the attendance data
+        Button buttonTheoreticalAttendance = findViewById(R.id.button_theoretical_attendance);
+        Button buttonPracticalAttendance = findViewById(R.id.button_practical_attendance);
+
+        buttonTheoreticalAttendance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                displayAttendanceData(subject.getTheoreticalAttendanceData());
+            }
+        });
+
+        buttonPracticalAttendance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                displayAttendanceData(subject.getPracticalAttendanceData());
+            }
+        });
+    }
+
+    private void displayAttendanceData(HashMap<LocalDate, Boolean> attendanceData) {
         ArrayList<String> attendanceDates = new ArrayList<>();
         ArrayList<Boolean> attendanceValues = new ArrayList<>();
 
-        for (Map.Entry<LocalDate, Boolean> entry : subject.getAttendanceData().entrySet()) {
+        for (Map.Entry<LocalDate, Boolean> entry : attendanceData.entrySet()) {
             attendanceDates.add(entry.getKey().toString());  // Add the date as a string
             attendanceValues.add(entry.getValue());  // Add the attendance value
         }
@@ -66,6 +86,7 @@ public class SubjectDetailActivity extends AppCompatActivity {
         AttendanceAdapter adapter = new AttendanceAdapter(this, attendanceDates, attendanceValues);
         listViewAttendance.setAdapter(adapter);
     }
+
 
     public class AttendanceAdapter extends ArrayAdapter<String> {
         private ArrayList<Boolean> attendanceValues;

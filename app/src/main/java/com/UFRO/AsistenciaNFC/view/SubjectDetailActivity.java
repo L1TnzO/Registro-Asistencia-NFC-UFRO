@@ -25,12 +25,10 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class SubjectDetailActivity extends AppCompatActivity {
+public class SubjectDetailActivity extends AbstractView {
     public TextView textViewSubjectName;
     public TextView textViewAttendancePercentage;
-    public AttendanceManager attendanceManager;
     public ListView listViewAttendance;
-    public final String csvFilePath = "/storage/emulated/0/NFCDataBase/database.csv";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

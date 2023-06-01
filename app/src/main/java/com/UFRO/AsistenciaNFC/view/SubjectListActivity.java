@@ -17,10 +17,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class SubjectListActivity extends AppCompatActivity {
+public class SubjectListActivity extends AbstractView {
     public ListView listViewSubjects;
-    public AttendanceManager attendanceManager;
-    public final String csvFilePath = "/storage/emulated/0/NFCDataBase/database.csv";
+
 
     // Create a HashMap to keep track of subjects by their names
     private HashMap<String, String> subjectNameToCodeMap;

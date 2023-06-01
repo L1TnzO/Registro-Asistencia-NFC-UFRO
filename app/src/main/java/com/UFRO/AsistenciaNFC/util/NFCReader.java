@@ -8,6 +8,7 @@ import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.util.Log;
 
+import androidx.appcompat.app.AppCompatActivity;
 
 
 public class NFCReader {
@@ -31,13 +32,13 @@ public class NFCReader {
 
     public void enableForegroundDispatch() {
         if (nfcAdapter != null) {
-            nfcAdapter.enableForegroundDispatch((MainActivity) context, pendingIntent, null, null);
+            nfcAdapter.enableForegroundDispatch((AppCompatActivity) context, pendingIntent, null, null);
         }
     }
 
     public void disableForegroundDispatch() {
         if (nfcAdapter != null) {
-            nfcAdapter.disableForegroundDispatch((MainActivity) context);
+            nfcAdapter.disableForegroundDispatch((AppCompatActivity) context);
         }
     }
 

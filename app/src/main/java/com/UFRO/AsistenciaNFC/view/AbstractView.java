@@ -11,14 +11,18 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.UFRO.AsistenciaNFC.data.AttendanceManager;
+import com.UFRO.AsistenciaNFC.data.CsvReader;
+import com.UFRO.AsistenciaNFC.data.CsvWriter;
+import com.UFRO.AsistenciaNFC.data.SubjectManager;
 import com.UFRO.AsistenciaNFC.util.NFCReader;
 
 import java.io.IOException;
 
 public abstract class AbstractView extends AppCompatActivity {
     protected NFCReader nfcReader;
-    protected AttendanceManager attendanceManager;
+    protected SubjectManager subjectManager;
     protected static final int REQUEST_MANAGE_STORAGE = 2;
+    protected AttendanceManager attendanceManager;
     protected final String csvFilePath = "/storage/emulated/0/NFCDataBase/database.csv";
 
     @Override
@@ -53,8 +57,8 @@ public abstract class AbstractView extends AppCompatActivity {
 
         try {
             String nfcCode = nfcReader.getSavedResult();
-            attendanceManager.updateAttendance(nfcCode);
-            attendanceManager.saveSubjects();
+            subjectManager.getAttendanceManager().updateAttendance(nfcCode);
+            subjectManager.saveSubjects();
         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(this, "No se pudo actualizar la asistencia", Toast.LENGTH_SHORT).show();
@@ -76,11 +80,17 @@ public abstract class AbstractView extends AppCompatActivity {
 
     private void initializeAttendanceManager() {
         try {
-            attendanceManager = new AttendanceManager(csvFilePath);
+            CsvReader csvReader = new CsvReader();
+            CsvWriter csvWriter = new CsvWriter();
+
+            subjectManager = new SubjectManager(csvFilePath, csvReader, csvWriter);
+
+            attendanceManager = new AttendanceManager(subjectManager);
         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(this, "No se pudo cargar la base de datos", Toast.LENGTH_SHORT).show();
         }
     }
+
 }
 

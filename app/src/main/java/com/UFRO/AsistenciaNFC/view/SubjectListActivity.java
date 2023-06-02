@@ -31,24 +31,16 @@ public class SubjectListActivity extends AbstractView {
 
         listViewSubjects = findViewById(R.id.listView_subjects);
 
-        try {
-            attendanceManager = new AttendanceManager(csvFilePath);
-
-            // Initialize the HashMap
-            subjectNameToCodeMap = new HashMap<>();
-            for (Subject subject : attendanceManager.getSubjects().values()) {
-                subjectNameToCodeMap.put(subject.getSubjectName(), subject.getSubjectCode());
-            }
-
-            // Display subject names instead of codes
-            ArrayList<String> subjectNames = new ArrayList<>(subjectNameToCodeMap.keySet());
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, subjectNames);
-            listViewSubjects.setAdapter(adapter);
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(this, "No se pudo cargar la base de datos", Toast.LENGTH_SHORT).show();
-            return;
+        subjectNameToCodeMap = new HashMap<>();
+        for (Subject subject : subjectManager.getSubjects().values()) {
+            subjectNameToCodeMap.put(subject.getSubjectName(), subject.getSubjectCode());
         }
+
+        // Display subject names instead of codes
+        ArrayList<String> subjectNames = new ArrayList<>(subjectNameToCodeMap.keySet());
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, subjectNames);
+        listViewSubjects.setAdapter(adapter);
+
 
         listViewSubjects.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

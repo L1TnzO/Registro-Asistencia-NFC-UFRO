@@ -37,16 +37,8 @@ public class SubjectDetailActivity extends AbstractView {
 
         listViewAttendance = findViewById(R.id.listView_attendance);
 
-        try {
-            attendanceManager = new AttendanceManager(csvFilePath);
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(this, "Could not load CSV file", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
         String subjectCode = getIntent().getStringExtra("subjectCode");
-        final Subject subject = attendanceManager.getSubject(subjectCode);
+        final Subject subject = subjectManager.getSubject(subjectCode);
 
         textViewSubjectName = findViewById(R.id.textView_subjectName);
         textViewAttendancePercentage = findViewById(R.id.textView_attendancePercentage);

@@ -1,8 +1,6 @@
 package com.UFRO.AsistenciaNFC.view;
 
-import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -11,18 +9,16 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
-import com.UFRO.AsistenciaNFC.data.AttendanceManager;
 import com.UFRO.AsistenciaNFC.data.Subject;
 import com.example.nfc_test.R;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class SubjectDetailActivity extends AbstractView {
@@ -73,32 +69,23 @@ public class SubjectDetailActivity extends AbstractView {
             attendanceValues.add(entry.getValue());  // Add the attendance value
         }
 
-        AttendanceAdapter adapter = new AttendanceAdapter(this, attendanceDates, attendanceValues);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, attendanceDates) {
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                TextView view = (TextView) super.getView(position, convertView, parent);
+                if (attendanceValues.get(position)) {
+                    view.setBackgroundColor(Color.GREEN);
+                } else {
+                    view.setBackgroundColor(Color.RED);
+                }
+                return view;
+            }
+        };
+
         listViewAttendance.setAdapter(adapter);
     }
 
-
-    public class AttendanceAdapter extends ArrayAdapter<String> {
-        private ArrayList<Boolean> attendanceValues;
-        private Context context;
-
-        public AttendanceAdapter(Context context, ArrayList<String> attendanceDates, ArrayList<Boolean> attendanceValues) {
-            super(context, android.R.layout.simple_list_item_1, attendanceDates);
-            this.context = context;
-            this.attendanceValues = attendanceValues;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            TextView view = (TextView) super.getView(position, convertView, parent);
-            if (attendanceValues.get(position)) {
-                view.setBackgroundColor(Color.GREEN);
-            } else {
-                view.setBackgroundColor(Color.RED);
-            }
-            return view;
-        }
-    }
 }
 
 

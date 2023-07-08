@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#E3F2FD"
     android:padding="16dp">
 
     <TextView
@@ -10,20 +11,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="24sp"
-        android:text="Subject Name"/>
-
-    <TextView
-        android:id="@+id/textView_attendancePercentage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textSize="18sp"
-        android:text="Attendance Percentage"/>
+        android:text="Lista de asignaturas"
+        android:textColor="#0D47A1"
+        android:fontFamily="sans-serif-light"
+        android:layout_marginBottom="16dp" />
 
     <ListView
         android:id="@+id/listView_subjects"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <!-- TODO: Add other views for the subject details activity -->
+        android:layout_height="wrap_content"
+        android:divider="#BBDEFB"
+        android:dividerHeight="0.5dp"
+        android:textColorHighlight="#0000FF" />
 
 </LinearLayout>
+
+

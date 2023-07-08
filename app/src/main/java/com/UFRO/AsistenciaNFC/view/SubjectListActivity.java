@@ -1,6 +1,5 @@
 package com.UFRO.AsistenciaNFC.view;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.content.Intent;
@@ -9,11 +8,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.UFRO.AsistenciaNFC.data.AttendanceManager;
 import com.UFRO.AsistenciaNFC.data.Subject;
 import com.example.nfc_test.R;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -38,7 +35,8 @@ public class SubjectListActivity extends AbstractView {
 
         // Display subject names instead of codes
         ArrayList<String> subjectNames = new ArrayList<>(subjectNameToCodeMap.keySet());
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, subjectNames);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.list_item_subject, subjectNames);
+
         listViewSubjects.setAdapter(adapter);
 
 

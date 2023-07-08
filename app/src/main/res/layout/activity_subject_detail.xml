@@ -1,40 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#E3F2FD">
 
     <TextView
         android:id="@+id/textView_subjectName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Subject Name" />
+        android:text="Asignaturas"
+        android:textColor="#0D47A1"
+        android:textSize="24sp"
+        android:fontFamily="sans-serif-light"
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true"/>
 
     <TextView
         android:id="@+id/textView_attendancePercentage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Attendance Percentage"
-        android:layout_below="@id/textView_subjectName" />
+        android:textColor="#0D47A1"
+        android:fontFamily="sans-serif-light"
+        android:layout_below="@id/textView_subjectName"
+        android:layout_marginTop="8dp"
+        android:layout_centerHorizontal="true"/>
 
     <ListView
         android:id="@+id/listView_attendance"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textView_attendancePercentage" />
+        android:layout_below="@id/textView_attendancePercentage"
+        android:divider="#0D47A1"
+        android:dividerHeight="0.5dp"
+        android:layout_marginTop="16dp"/>
 
     <Button
         android:id="@+id/button_theoretical_attendance"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Theoretical Attendance"
-        android:layout_below="@id/listView_attendance" />
+        android:text="Asistencia teorica"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#0D47A1"
+        android:layout_below="@id/listView_attendance"
+        android:layout_marginTop="16dp"
+        android:padding="12dp"
+        android:fontFamily="sans-serif-medium"/>
 
     <Button
         android:id="@+id/button_practical_attendance"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Practical Attendance"
-        android:layout_below="@id/button_theoretical_attendance" />
+        android:text="Asistencia practica"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#0D47A1"
+        android:layout_below="@id/button_theoretical_attendance"
+        android:layout_marginTop="16dp"
+        android:padding="12dp"
+        android:fontFamily="sans-serif-medium"/>
 
 </RelativeLayout>
+
 

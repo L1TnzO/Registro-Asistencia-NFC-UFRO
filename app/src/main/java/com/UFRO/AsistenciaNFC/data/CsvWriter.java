@@ -10,7 +10,7 @@ public class CsvWriter {
 
     public void writeSubjects(String csvFilePath, Map<String, Subject> subjects, AttendanceManager attendanceManager) throws IOException {
         FileWriter csvWriter = new FileWriter(csvFilePath);
-        csvWriter.append("Nombre Asignatura,ID NFC,Hora comienzo,Hora fin,Dias semana,Comienzo semestre,Fin semestre,Dias clases\n");
+        csvWriter.append("Nombre Asignatura,ID NFC,Hora comienzo,Hora fin,Dias semana teoricos, Dias semana practicos,Comienzo semestre,Fin semestre,Dias clases\n");
         for (Subject subject : subjects.values()) {
             List<String> row = new ArrayList<>();
             row.add(subject.getSubjectName());

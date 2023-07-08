@@ -3,9 +3,7 @@ package com.UFRO.AsistenciaNFC.data;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class AttendanceManager {
 
@@ -43,36 +41,6 @@ public class AttendanceManager {
                 }
             }
         }
-    }
-
-
-
-    void generateClassDates(Subject subject) {
-        LocalDate currentDate = subject.getStartDate();
-        while (!currentDate.isAfter(subject.getEndDate())) {
-            int dayOfWeek = currentDate.getDayOfWeek().getValue();
-            if (subject.getSubjectTheoricalDays().charAt(dayOfWeek - 1) == '1') {
-                LinkedHashMap<LocalDate, Boolean> theoreticalAttendanceData = new LinkedHashMap<>(subject.getTheoreticalAttendanceData());
-                Boolean existingValue = theoreticalAttendanceData.get(currentDate);
-                if (existingValue == null) {
-                    theoreticalAttendanceData.put(currentDate, false);
-                }
-                subject.setTheoreticalAttendanceData(theoreticalAttendanceData);
-            } else if (subject.getSubjectPracticalDays().charAt(dayOfWeek - 1) == '1') {
-                LinkedHashMap<LocalDate, Boolean> practicalAttendanceData = new LinkedHashMap<>(subject.getPracticalAttendanceData());
-                Boolean existingValue = practicalAttendanceData.get(currentDate);
-                if (existingValue == null) {
-                    practicalAttendanceData.put(currentDate, false);
-                }
-                subject.setPracticalAttendanceData(practicalAttendanceData);
-            }
-            currentDate = currentDate.plusDays(1);
-        }
-    }
-
-
-    public SubjectManager getSubjectManager() {
-        return subjectManager;
     }
 }
 

@@ -51,6 +51,10 @@ public class CsvReader {
                     }
                 }
 
+                if (data.length < 8) {
+                    csvReader.close();
+                    throw new IOException("Formato no válido en el archivo CSV");
+                }
 
                 Subject subject = new Subject(subjectCode, subjectName, subjectTheoricalDays, subjectPracticalDays, subjectTimeStart, subjectTimeEnd, startDate, endDate);
                 subject.setTheoreticalAttendanceData(theoreticalAttendanceData);
@@ -59,7 +63,7 @@ public class CsvReader {
             }
             csvReader.close();
         } else {
-            throw new FileNotFoundException("No se pudo guardar en la base de datos");
+            throw new IOException("No se encontró el archivo CSV");
         }
         return subjects;
     }

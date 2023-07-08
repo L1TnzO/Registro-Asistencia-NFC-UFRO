@@ -23,8 +23,8 @@ public abstract class AbstractView extends AppCompatActivity {
     protected SubjectManager subjectManager;
     protected static final int REQUEST_MANAGE_STORAGE = 2;
     protected AttendanceManager attendanceManager;
-    protected final String csvFilePath = "/storage/emulated/0/NFCDataBase/database.csv";
-
+    protected final String rutaDirectorio = Environment.getExternalStorageDirectory().getAbsolutePath();
+    protected final String csvFilePath = rutaDirectorio + "/NFCDataBase/database.csv";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

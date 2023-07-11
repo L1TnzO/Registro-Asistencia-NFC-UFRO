@@ -77,7 +77,7 @@ public class SubjectDetailActivity extends AbstractView {
                 if (attendanceValues.get(position)) {
                     view.setBackgroundColor(Color.GREEN);
                 } else {
-                    view.setBackgroundColor(Color.RED);
+                    view.setBackgroundColor(Color.BLUE);
                 }
                 return view;
             }

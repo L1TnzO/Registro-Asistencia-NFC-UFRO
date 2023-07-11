@@ -1,5 +1,4 @@
 package com.UFRO.AsistenciaNFC.util;
-import com.UFRO.AsistenciaNFC.view.MainActivity;
 
 import android.app.PendingIntent;
 import android.content.Context;

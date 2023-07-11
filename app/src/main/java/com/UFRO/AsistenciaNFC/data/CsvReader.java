@@ -1,7 +1,6 @@
 package com.UFRO.AsistenciaNFC.data;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -26,7 +25,7 @@ public class CsvReader {
                     }
                     String[] data = row.split(",");
                     if (data.length < 7) {
-                        System.out.println("Formato no válido en la línea del archivo CSV, sal    tando a la siguiente línea...");
+                        System.out.println("Formato no válido en la línea del archivo CSV, saltando a la siguiente línea...");
                         continue;
                     }
                     try {

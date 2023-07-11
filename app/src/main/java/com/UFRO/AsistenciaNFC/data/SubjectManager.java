@@ -1,6 +1,7 @@
 package com.UFRO.AsistenciaNFC.data;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
@@ -17,7 +18,13 @@ public class SubjectManager {
         this.csvReader = csvReader;
         this.csvWriter = csvWriter;
         this.subjects = csvReader.readCsvData(csvPath);
-        this.attendanceManager = new AttendanceManager(this);
+
+        // Create the current date and time
+        LocalDate currentDate = LocalDate.now();
+        LocalTime currentTime = LocalTime.now();
+
+        // Pass them to the AttendanceManager constructor
+        this.attendanceManager = new AttendanceManager(this, currentDate, currentTime);
 
         for (Subject subject : subjects.values()) {
             generateClassDates(subject);

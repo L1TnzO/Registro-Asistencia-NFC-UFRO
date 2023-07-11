@@ -17,6 +17,8 @@ import com.UFRO.AsistenciaNFC.data.SubjectManager;
 import com.UFRO.AsistenciaNFC.util.NFCReader;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public abstract class AbstractView extends AppCompatActivity {
     protected NFCReader nfcReader;
@@ -34,7 +36,6 @@ public abstract class AbstractView extends AppCompatActivity {
         nfcReader = new NFCReader(this);
         if (!nfcReader.isNFCEnabled()) {
             Toast.makeText(this, "El dispositivo no cuenta con NFC", Toast.LENGTH_SHORT).show();
-            finish();
         }
     }
 
@@ -85,7 +86,12 @@ public abstract class AbstractView extends AppCompatActivity {
 
             subjectManager = new SubjectManager(csvFilePath, csvReader, csvWriter);
 
-            attendanceManager = new AttendanceManager(subjectManager);
+            // Create the current date and time
+            LocalDate currentDate = LocalDate.now();
+            LocalTime currentTime = LocalTime.now();
+
+            // Pass them to the AttendanceManager constructor
+            attendanceManager = new AttendanceManager(subjectManager, currentDate, currentTime);
         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(this, "No se pudo cargar la base de datos", Toast.LENGTH_SHORT).show();

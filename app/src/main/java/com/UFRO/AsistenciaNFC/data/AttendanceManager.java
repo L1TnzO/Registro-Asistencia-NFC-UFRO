@@ -8,14 +8,16 @@ import java.util.LinkedHashMap;
 public class AttendanceManager {
 
     private SubjectManager subjectManager;
+    private LocalDate currentDate;
+    private LocalTime currentTime;
 
-    public AttendanceManager(SubjectManager subjectManager) {
+    public AttendanceManager(SubjectManager subjectManager, LocalDate currentDate, LocalTime currentTime) {
         this.subjectManager = subjectManager;
+        this.currentDate = currentDate;
+        this.currentTime = currentTime;
     }
 
     public void updateAttendance(String nfcCode) throws IOException {
-        LocalDate currentDate = LocalDate.now();
-        LocalTime currentTime = LocalTime.now();
 
         // Iterate over the subjects to find the matching subject
         for (Subject subject : subjectManager.getSubjects().values()) {
